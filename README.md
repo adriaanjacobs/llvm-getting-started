@@ -26,3 +26,10 @@ To run on some LLVM IR, use:
 ```
 
 The `libpass.so` file can also be run more "traditionally" as a dlopen'ed library by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, let me know at adriaan.jacobs7@gmail.com.
+
+## Code to run on
+Since the passrunner runs on bitcode, you'll have to generate that from whatever language you're trying to analyze first. For clang, you can do this with the `-S -emit-llvm` options.
+
+If you want to do whole-program analysis (WPA), I highly recommend [the gllvm project](https://github.com/SRI-CSL/gllvm) at the moment to generate complete LLVM bitcode for complex projects. It is a version of the more well-known [wllvm](https://github.com/travitch/whole-program-llvm) project that, among other things, sports faster compile times. An easy project to get started with is [MbedTLS](https://github.com/Mbed-TLS/mbedtls), since it builds statically by default and has some useful test programs (like [benchmark.c](https://github.com/Mbed-TLS/mbedtls/blob/development/programs/test/benchmark.c)) that are moderately sized but still simple enough for most points-to analyses.
+
+Lastly, ideally, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). However, this does not support the new pass manager yet.
