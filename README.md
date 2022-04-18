@@ -25,4 +25,4 @@ To run on some LLVM IR, use:
 <build>/passrunner <.ll/.bc file> <output file>
 ```
 
-The `libpass.so` file can also be linked in to clang to be run more "traditionally" as a dlopen'ed library. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, let me know at adriaan.jacobs7@gmail.com.
+The `libpass.so` file can also be run more "traditionally" as a dlopen'ed library by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, let me know at adriaan.jacobs7@gmail.com.
