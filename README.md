@@ -1,11 +1,14 @@
 # Simple LLVM "getting started" project
 
 This project is intended as (imo) the simplest possible way to get started with modern LLVM. 
+
 ## Features
 * It uses LLVM 13, but can be adapted to use any (fairly recent) version of LLVM easily by modifying [`CMakeLists.txt`](CMakeLists.txt). 
 * It uses the new pass manager.
-* It is out-of-tree, allowing you to quickly change between LLVM versions and builds.
-* Because it is out-of-tree, it does not require you to build LLVM yourself up front, which can be a large initial hurdle for beginners.
+* It is out-of-tree, which has the following advantages:
+    * You can quickly change between LLVM versions and builds.
+    * It does not require you to build LLVM yourself up front, which can be a large initial hurdle for beginners.
+    * You get way more precise control over the passes that run before and after your own than is available via the default extension points, without having to modify the compiler sources.
 
 I expect that this code can even build against LLVM 12, which is available from the default Ubuntu 20.04 repositories and thus does not require you to download any additional LLVM release at all. I haven't tested this yet, though.
 
@@ -31,5 +34,7 @@ The `libpass.so` file can also be run more "traditionally" as a dlopen'ed librar
 Since the passrunner runs on bitcode, you'll have to generate that from whatever language you're trying to analyze first. For clang, you can do this with the `-S -emit-llvm` options.
 
 If you want to do whole-program analysis (WPA), I highly recommend [the gllvm project](https://github.com/SRI-CSL/gllvm) at the moment to generate complete LLVM bitcode for complex projects. It is a version of the more well-known [wllvm](https://github.com/travitch/whole-program-llvm) project that, among other things, sports faster compile times. An easy project to get started with is [MbedTLS](https://github.com/Mbed-TLS/mbedtls), since it builds statically by default and has some useful test programs (like [benchmark.c](https://github.com/Mbed-TLS/mbedtls/blob/development/programs/test/benchmark.c)) that are moderately sized but still simple enough for most points-to analyses.
+
+If you want to run some passes before running your analysis, you can either do that with `opt`, or you can add them to `MPM` in [passrunner.cpp](passrunner.cpp) before `MyInstrumentationPass` if you want to run them every time. This gives very precise control over the layout of the IR before you run your own stuff.
 
 Lastly, ideally, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). However, this does not support the new pass manager yet.
