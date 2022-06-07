@@ -13,12 +13,13 @@ This project is intended as (imo) the simplest possible way to get started with 
 I expect that this code can even build against LLVM 12, which is available from the default Ubuntu 20.04 repositories and thus does not require you to download any additional LLVM release at all. I haven't tested this yet, though.
 
 ## To build
-You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 13, so for Ubuntu 20.04, you can grab that [here](https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz)
+You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 13, so for Ubuntu 20.04, you can grab that [here](https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz). Alternatively, if you have another distribution, distribution version, or need an even more recent version of LLVM, you can download it from [their official repositories](https://apt.llvm.org/) as well.
 
-Then, simply set the LLVM_DIR cmake variable to the location of the installed LLVM's cmake/llvm folder (containing LLVMConfig.cmake) and you're good to go. Run the below common command from the (empty) folder where you wish to build this project:
+Then, simply set the LLVM_DIR cmake variable to the location of the installed LLVM's cmake/llvm folder (containing LLVMConfig.cmake, `find <folder> -name "LLVMConfig.cmake"`) and you're good to go. Run the below common command from the (empty) folder where you wish to build this project:
 ```
 cmake <path/to/llvm-getting-started> -DLLVM_DIR=<path/to/llvm-13.0.0>/lib/cmake/llvm/
 ```
+If you installed the LLVM tree into the default prefix (`/usr`), you don't even need to set LLVM_DIR.
 
 ## To run
 The project is set up to build both a shared library containing the passes, and a "runner" executable that has the passes linked in and acts as a driver to parse the LLVM bitcode, register the necessary analyses, and run the instrumentation pass. Then, it prints the resulting module (likely changed by the pass) to a specified file.
