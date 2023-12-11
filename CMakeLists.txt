@@ -1,13 +1,6 @@
 cmake_minimum_required(VERSION 3.4.3)
 project(llvm-getting-started)
 
-# # Add the location of LLVMConfig.cmake to CMake search paths (so that
-# # find_package can locate it)
-list(APPEND CMAKE_PREFIX_PATH 
-            "${LLVM_DIR}/lib/cmake/llvm/" 
-            # "${LLVM_DIR}/lib/cmake/clang/"
-)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -34,9 +27,14 @@ set(COMMON_FLAGS -DMY_LLVM_VERSION=${MY_LLVM_VERSION} -Wno-comment -fno-rtti -O2
 
 # The below part can be moved into its own subdirectory if you want (I typically do it like that)
 add_library(pass SHARED pass.cpp)
-target_compile_options(pass PRIVATE ${COMMON_FLAGS})
-# target_link_libraries(pass)
+target_compile_options(pass PUBLIC ${COMMON_FLAGS})
 
+# an executable that sets up LLVM's pass machinery and runs our pass on a provided bitcode file
 add_executable(passrunner passrunner.cpp)
-target_compile_options(passrunner PRIVATE ${COMMON_FLAGS})
+target_compile_options(passrunner PUBLIC ${COMMON_FLAGS})
 target_link_libraries(passrunner pass ${llvm_libs})
+
+# a library that can be loaded into the llvm middle-end during LTO optimization at link time
+add_library(LTOpass SHARED LTOboilerplate.cpp)
+target_compile_options(LTOpass PUBLIC ${COMMON_FLAGS})
+target_link_libraries(LTOpass pass ${llvm_libs})
