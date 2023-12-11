@@ -3,7 +3,7 @@
 This project is intended as (imo) the simplest possible way to get started with modern LLVM. 
 
 ## Features
-* It uses LLVM 13, but can be adapted to use any (fairly recent) version of LLVM easily by modifying [`CMakeLists.txt`](CMakeLists.txt). 
+* It uses LLVM 15, but can (probably) be adapted to use any (fairly recent) version of LLVM easily by modifying [`CMakeLists.txt`](CMakeLists.txt). 
 * It uses the new pass manager.
 * It is out-of-tree, which has the following advantages:
     * You can quickly change between LLVM versions and builds.
@@ -13,11 +13,11 @@ This project is intended as (imo) the simplest possible way to get started with 
 I expect that this code can even build against LLVM 12, which is available from the default Ubuntu 20.04 repositories and thus does not require you to download any additional LLVM release at all. I haven't tested this yet, though.
 
 ## To build
-You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 13, so for Ubuntu 20.04, you can grab that [here](https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz)
+You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 15, so for Ubuntu 20.04, you can grab that from [LLVM's apt repositories](apt.llvm.org)
 
 Then, simply set the LLVM_DIR cmake variable to the location of the installed LLVM's cmake/llvm folder (containing LLVMConfig.cmake) and you're good to go. Run the below common command from the (empty) folder where you wish to build this project:
 ```
-cmake <path/to/llvm-getting-started> -DLLVM_DIR=<path/to/llvm-13.0.0>/lib/cmake/llvm/
+cmake <path/to/llvm-getting-started> -DLLVM_DIR=<path/to/llvm-15>/lib/cmake/llvm/
 ```
 
 ## To run
