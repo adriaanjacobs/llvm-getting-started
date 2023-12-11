@@ -13,9 +13,9 @@ This project is intended as (imo) the simplest possible way to get started with 
 I expect that this code can even build against LLVM 12, which is available from the default Ubuntu 20.04 repositories and thus does not require you to download any additional LLVM release at all. I haven't tested this yet, though.
 
 ## To build
-You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 15, so for Ubuntu 20.04, you can grab that from [LLVM's apt repositories](apt.llvm.org)
+You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 15, so for Ubuntu 20.04, you can grab that from [LLVM's apt repositories](https://apt.llvm.org/).
 
-Then, simply set the LLVM_DIR cmake variable to the location of the installed LLVM's cmake/llvm folder (containing LLVMConfig.cmake) and you're good to go. Run the below common command from the (empty) folder where you wish to build this project:
+Then, simply set the LLVM_DIR cmake variable to the location of the installed LLVM's cmake/llvm folder (containing LLVMConfig.cmake, `find <folder> -name "LLVMConfig.cmake"`) and you're good to go. For LLVM installations in default places (`/usr/lib/`), this is likely not even necessary. Run the below common command from the (empty) folder where you wish to build this project:
 ```
 cmake <path/to/llvm-getting-started> -DLLVM_DIR=<path/to/llvm-15>/lib/cmake/llvm/
 ```
@@ -37,4 +37,4 @@ If you want to do whole-program analysis (WPA), I highly recommend [the gllvm pr
 
 If you want to run some passes before running your analysis, you can either do that with `opt`, or you can add them to `MPM` in [passrunner.cpp](passrunner.cpp) before `MyInstrumentationPass` if you want to run them every time. This gives very precise control over the layout of the IR before you run your own stuff.
 
-Lastly, ideally, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). However, this does not support the new pass manager yet.
+Lastly, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). The LLVM project recently (v15) gained support for this for the NewPM, [let me know](mailto:adriaan.jacobs7@gmail.com) if you have any questions about that.
