@@ -35,4 +35,4 @@ If you want to do whole-program analysis (WPA), I highly recommend [the gllvm pr
 
 If you want to run some passes before running your analysis, you can either do that with `opt`, or you can add them to `MPM` in [passrunner.cpp](passrunner.cpp) before `MyInstrumentationPass` if you want to run them every time. This gives very precise control over the layout of the IR before you run your own stuff.
 
-Lastly, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). The LLVM project recently (v15) gained support for this for the NewPM, [let me know](mailto:adriaan.jacobs7@gmail.com) if you have any questions about that.
+Lastly, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). The LLVM project recently (v15) gained support for this for the NewPM, let me know if you have any questions about that.
