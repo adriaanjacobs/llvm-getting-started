@@ -10,8 +10,6 @@ This project is intended as (imo) the simplest possible way to get started with 
     * It does not require you to build LLVM yourself up front, which can be a large initial hurdle for beginners.
     * You get way more precise control over the passes that run before and after your own than is available via the default extension points, without having to modify the compiler sources.
 
-I expect that this code can even build against LLVM 12, which is available from the default Ubuntu 20.04 repositories and thus does not require you to download any additional LLVM release at all. I haven't tested this yet, though.
-
 ## To build
 You will likely have to download an official LLVM release from their GitHub. By default, this project uses LLVM 15, so for Ubuntu 20.04, you can grab that from [LLVM's apt repositories](https://apt.llvm.org/).
 
@@ -28,7 +26,7 @@ To run on some LLVM IR, use:
 <build>/passrunner <.ll/.bc file> <output file>
 ```
 
-The `libpass.so` file can also be run more "traditionally" as a dlopen'ed library by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, let me know at adriaan.jacobs7@gmail.com.
+The `libpass.so` file can also be run more "traditionally" as a dlopen'ed library by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, feel free to make an issue.
 
 ## Code to run on
 Since the passrunner runs on bitcode, you'll have to generate that from whatever language you're trying to analyze first. For clang, you can do this with the `-S -emit-llvm` options.
