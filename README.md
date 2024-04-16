@@ -37,7 +37,7 @@ To run on some LLVM IR, use:
 <build>/passrunner <.ll/.bc file> <output file>
 ```
 
-The `libpass.so` file can also be run more "traditionally" as a plugin by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, let me know.
+The `libpass.so` file can also be run more "traditionally" as a plugin by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, feel free to make an issue.
 
 ## Code to run on
 Since the passrunner runs on bitcode, you'll have to generate that from whatever language you're trying to analyze first. For clang, you can do this with the `-S -emit-llvm` options.
