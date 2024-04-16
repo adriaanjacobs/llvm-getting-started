@@ -1,5 +1,6 @@
-#include <llvm/IR/PassManager.h>
+#pragma once
 
+#include <llvm/IR/PassManager.h>
 
 //===----------------------------------------------------------------------===//
 /// This class implements an LLVM module analysis pass.
