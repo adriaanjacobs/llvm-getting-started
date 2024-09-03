@@ -20,6 +20,11 @@ chmod +x llvm.sh
 sudo ./llvm.sh 15
 ```
 
+> **Recommended:** install the clang development files if you also want to invoke or extend the Clang frontend at some point.
+> ```bash
+> sudo apt install libclang-15-dev
+> ```
+
 For such installations in the default systems folders, you can then simply run `cmake` from a build directory and the installed LLVM version 15 will be found. 
 ```bash
 mkdir build
