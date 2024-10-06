@@ -12,8 +12,6 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Analysis/AliasAnalysis.h>
 #include <memory>
-#include <signal.h>
-#include <iostream>
 #include <system_error>
 
 int main(int argc, char* argv[]) {
@@ -66,7 +64,7 @@ int main(int argc, char* argv[]) {
     PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
 
     // Register our own analyses
-    MAM.registerPass([&] { return MyAnalysis{}; });
+    MyInstrumentationPass::registerAnalyses(MAM);
 
     llvm::ModulePassManager MPM;
     

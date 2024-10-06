@@ -32,4 +32,9 @@ public:
 
     // Transform the bitcode/IR in the given LLVM module.
     llvm::PreservedAnalyses run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM);
+
+    // registers any custom analyses necessary to run this pass
+    // useful to maintain the list of custom analyses in one place
+    //  accross different invocation contexts of the pass (passrunner, LTOplugin, ...)
+    static void registerAnalyses(llvm::ModuleAnalysisManager& MAM);
 };

@@ -12,9 +12,7 @@ extern "C" ::llvm::PassPluginLibraryInfo LLVM_ATTRIBUTE_WEAK llvmGetPassPluginIn
                 llvm::outs() << "Registering pass for LateLTO!\n";
                 MPM.addPass(MyInstrumentationPass{});
             });
-            PB.registerAnalysisRegistrationCallback([] (llvm::ModuleAnalysisManager& MAM) {
-                MAM.registerPass([] () { return MyAnalysis{}; });
-            });
+            PB.registerAnalysisRegistrationCallback(MyInstrumentationPass::registerAnalyses);
         }
     };
 }

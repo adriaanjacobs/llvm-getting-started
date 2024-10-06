@@ -27,3 +27,6 @@ llvm::PreservedAnalyses MyInstrumentationPass::run(llvm::Module& module, llvm::M
     return llvm::PreservedAnalyses::none();
 }
 
+void MyInstrumentationPass::registerAnalyses(llvm::ModuleAnalysisManager &MAM) {
+    MAM.registerPass([] { return MyAnalysis{}; });
+}
