@@ -13,7 +13,7 @@ This project is intended as (imo) the simplest possible way to get started with 
 I expect that this code can build against many LLVM versions, but it is most tested on LLVM 15.
 
 ## To build
-You will likely have to download an official LLVM release. By default, this project uses LLVM 15, so for Ubuntu 20.04, you can grab that from [LLVM's apt repositories](https://apt.llvm.org/). General instructions like so:
+You will likely have to download an official LLVM release. By default, this project uses LLVM 15. For Ubuntu you can grab pre-built libraries from [LLVM's apt repositories](https://apt.llvm.org/). General instructions like so:
 ```bash
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
@@ -25,19 +25,22 @@ sudo ./llvm.sh 15
 > sudo apt install libclang-15-dev
 > ```
 
-For such installations in the default systems folders, you can then simply run `cmake` from a build directory and the installed LLVM version 15 will be found. 
+You can then simply run `cmake` from a build directory and the installed LLVM version 15 will be found. 
 ```bash
 mkdir build
 cd build
 cmake ../
 make -j
 ```
-If you manually installed LLVM to a non-standard version, you can set the `LLVM_DIR` CMake variable to the `cmake/llvm` folder of your installation (containing LLVMConfig.cmake, `find <folder> -name "LLVMConfig.cmake"`).  
+If you manually installed LLVM to a non-standard location, you can set the `LLVM_DIR` CMake variable to the `cmake/llvm` folder of your installation (containing LLVMConfig.cmake, `find <folder> -name "LLVMConfig.cmake"`).  
 
 ## To run
-The project is set up to build both a shared library containing the passes, and a "runner" executable that has the passes linked in and acts as a driver to parse the LLVM bitcode, register the necessary analyses, and run the instrumentation pass. Then, it prints the resulting module (likely changed by the pass) to a specified file.
+The project is set up to build:
+1. A shared library containing the passes/analyses.
+2. A "runner" executable that has the passes linked in and acts as a driver to parse the LLVM bitcode, register the necessary analyses, and run the instrumentation pass. Then, it prints the resulting module (possibly changed by the pass) to a specified file.
+3. An LTO plugin that can be loaded into clang like so: `clang-15 -flto -fuse-ld=/usr/bin/ld.lld-15 -Xlinker --load-pass-plugin=<plugin path>`. You can find the boilerplate for that in [LTOboilerplate.cpp](/LTOboilerplate.cpp). 
 
-To run on some LLVM IR, use:
+To simply run on some LLVM IR, use the runner executable as follows:
 ```
 <build>/passrunner <.ll/.bc file> <output file>
 ```
@@ -51,4 +54,3 @@ If you want to do whole-program analysis (WPA), I highly recommend [the gllvm pr
 
 If you want to run some passes before running your analysis, you can either do that with `opt`, or you can add them to `MPM` in [passrunner.cpp](passrunner.cpp) before `MyInstrumentationPass` if you want to run them every time. This gives very precise control over the layout of the IR before you run your own stuff.
 
-Lastly, we could run these out-of-tree passes at link time using Clang's link-time optimization (LTO). The relevant boilerplate for that is in [LTOboilerplate.cpp](/LTOboilerplate.cpp)
