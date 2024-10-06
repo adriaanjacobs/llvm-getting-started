@@ -3,8 +3,6 @@ project(llvm-getting-started)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(LLVM 15 REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
@@ -13,7 +11,6 @@ message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 # The below part can be moved into its own subdirectory if you want (I typically do it like that)
 add_library(pass SHARED pass.cpp)
 target_compile_options(pass PUBLIC 
-                            -std=c++20 
                             -Wall -Wextra -Werror=return-type -Wimplicit-fallthrough -Wno-unused-parameter -Wno-unused-variable
                             -ggdb -fPIC -fno-rtti
                             -O2
