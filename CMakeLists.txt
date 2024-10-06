@@ -2,20 +2,23 @@ cmake_minimum_required(VERSION 3.4.3)
 project(llvm-getting-started)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(LLVM 15 REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-include_directories(${LLVM_INCLUDE_DIRS})
-
-add_compile_options(-Wall -Wextra -Werror=return-type -Wimplicit-fallthrough -Wno-unused-parameter -Wno-unused-variable)
-add_compile_options(-ggdb -fPIC -fno-rtti)
-add_compile_options(-O2)
 
 # The below part can be moved into its own subdirectory if you want (I typically do it like that)
 add_library(pass SHARED pass.cpp)
+target_compile_options(pass PUBLIC 
+                            -std=c++20 
+                            -Wall -Wextra -Werror=return-type -Wimplicit-fallthrough -Wno-unused-parameter -Wno-unused-variable
+                            -ggdb -fPIC -fno-rtti
+                            -O2
+)
+target_include_directories(pass PUBLIC ${LLVM_INCLUDE_DIRS})
 target_link_libraries(pass LLVM)
 
 # an executable that sets up LLVM's pass machinery and runs our pass on a provided bitcode file
