@@ -30,6 +30,7 @@ You can then simply run `cmake` from a build directory and the installed LLVM ve
 mkdir build
 cd build
 cmake ../
+mv compile_commands.json ../ # optionally expose the compilation database to help an IDE/language server
 make -j
 ```
 If you manually installed LLVM to a non-standard location, you can set the `LLVM_DIR` CMake variable to the `cmake/llvm` folder of your installation (containing LLVMConfig.cmake, `find <folder> -name "LLVMConfig.cmake"`).  
@@ -40,12 +41,17 @@ The project is set up to build:
 2. A "runner" executable that has the passes linked in and acts as a driver to parse the LLVM bitcode, register the necessary analyses, and run the instrumentation pass. Then, it prints the resulting module (possibly changed by the pass) to a specified file.
 3. An LTO plugin that can be loaded into clang like so: `clang-15 -flto -fuse-ld=/usr/bin/ld.lld-15 -Xlinker --load-pass-plugin=<plugin path>`. You can find the boilerplate for that in [LTOboilerplate.cpp](/LTOboilerplate.cpp). 
 
+> **NOTE:** For LLVM plugins to work, they need to match the ABI of the compiler they are loaded into. To ensure this is the case, build the project with 
+> ```bash
+> cmake ../ -DCMAKE_C_COMPILER=clang-15 -DCMAKE_CXX_COMPILER=clang++-15 
+> ```
+
 To simply run on some LLVM IR, use the runner executable as follows:
 ```
 <build>/passrunner <.ll/.bc file> <output file>
 ```
 
-The `libpass.so` file can also be run more "traditionally" as a plugin by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, feel free to make an issue.
+The `libpass.so` file can also be run more "traditionally" as a non-LTO plugin by clang/opt. I have not added the necessary boilerplate in `pass.cpp` to enable this for the new pass manager. If you have questions about that, feel free to make an issue.
 
 ## Code to run on
 Since the passrunner runs on bitcode, you'll have to generate that from whatever language you're trying to analyze first. For clang, you can do this with the `-S -emit-llvm` options.
