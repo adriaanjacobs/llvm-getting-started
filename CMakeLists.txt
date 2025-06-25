@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.4.3)
-project(llvm-getting-started)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+project(llvm-getting-started)
 
 find_package(LLVM 15 REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
